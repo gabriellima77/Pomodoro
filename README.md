@@ -9,7 +9,7 @@ Como ultimamente estou estudando offline, então resolvi fazer a minha versão d
 
 <br/>
 
-Se quiser testar a aplicação click[aqui](https://pomodoro-ten-iota.vercel.app/)
+Se quiser testar a aplicação click [aqui](https://pomodoro-ten-iota.vercel.app/)
 
 ## Começando
 
