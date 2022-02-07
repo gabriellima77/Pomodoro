@@ -1,6 +1,6 @@
 # Pomodoro
 
-Como ultimamente estou estudando offline, então resolvi fazer a minha versão do pomodoro.
+Como ultimamente estou estudando bastante offline, então resolvi fazer a minha versão do pomodoro.
 É um app bem simples, com apenas HTML, CSS e JS.
 
 ## Demo
