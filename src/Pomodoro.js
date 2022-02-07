@@ -1,13 +1,23 @@
 export default class Pomodoro {
   constructor() {
+    // controlador da transição do botão do Pomodoro
     this.isClicked = false;
+
+    // minutos e segundos
     this.s = 0;
     this.m = 25;
+
+    // quantidade de pomodoros
     this.pomodoros = 0;
+
+    // os tempos padrões para cada tipo de timer
     this.Pomodoro = 25;
     this.Short = 5;
     this.Long = 15;
+
     this.type = 'Pomodoro';
+
+    // Faz toda a manipulão do DOM, criando o Pomodoro.element
     this.createContainer();
   }
 
@@ -19,8 +29,7 @@ export default class Pomodoro {
   }
 
   changeBkColor(type) {
-    // Change container color
-
+    // Muda o background do container
     let classList = 'main-bk';
     if (type === 'Short') classList = 'short-bk';
     else if (type === 'Long') classList = 'long-bk';
@@ -30,22 +39,26 @@ export default class Pomodoro {
       container.classList = 'container ' + classList;
     }
 
-    // Change body background
+    // Muda o background do body
     this.removeBkColor();
     const body = document.querySelector('body');
     body.classList.add(classList);
   }
 
+  // toca som por 5 segundos
   playSound() {
+    const playingTime = 5000;
     const audio = document.createElement('audio');
     audio.src = './assets/alarm.mp3';
     audio.currentTime = 7;
     audio.play();
     setInterval(() => {
       audio.pause();
-    }, 5000);
+    }, playingTime);
   }
 
+  // Controla o os atributos de minutos e segundo pomodoro 
+  // e toca o som quando o tempo acaba
   timer(element) {
     if (this.m <= 0 && this.s <= 0) {
       clearInterval(this.interval);
@@ -67,6 +80,7 @@ export default class Pomodoro {
     this.changeTimeElement(element);
   }
 
+  // retorna como string os valores de segundos e minutos
   get getTimer() {
     const minutes = this.m < 10 ? '0' + this.m : this.m;
     const seconds = this.s < 10 ? '0' + this.s : this.s;
@@ -74,6 +88,9 @@ export default class Pomodoro {
     return timer;
   }
 
+  // muda o tipo do pomodoro
+  // changeToPlay é um booleano que se for true texto colocado será play
+  // se changeToPlay for false ou não declarado o texto mudará de Play para Pause ou o contrário
   changePomodoro(type, changeToPlay) {
     this.changeBkColor(type);
     this.m = this[type];
@@ -84,6 +101,7 @@ export default class Pomodoro {
     this.changeButtonText(changeToPlay);
   }
 
+  // changeToPlay é usado aqui para a troca do nome da ação do botão
   changeButtonText(changeToPlay) {
     if (changeToPlay) this.playBtn.textContent = 'Play';
     else
@@ -92,6 +110,7 @@ export default class Pomodoro {
     document.title = this.getTimer + ' - ' + this.type;
   }
 
+  // muda o titulo da aba, para o timer
   changeTimeElement(element) {
     const timer = this.getTimer;
     document.title = this.getTimer + ' - ' + this.type;
@@ -250,7 +269,8 @@ export default class Pomodoro {
   }
 
   putContainerEvents(container) {
-    // Transition Event
+    // Eventos de transição e de ação
+    
     container.addEventListener('mousedown', (e) => {
       if (this.isSettingsBtn(e)) return;
       this.isClicked = true;
@@ -267,7 +287,6 @@ export default class Pomodoro {
       setTimeout(() => container.classList.remove('active'), 200);
     });
 
-    // Play and Pause Event
     container.addEventListener('mouseup', (e) => {
       if (this.isSettingsBtn(e)) return;
       this.isClicked = false;
