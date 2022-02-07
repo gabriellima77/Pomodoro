@@ -18,6 +18,6 @@ Se quiser rodar a aplicação na sua máquina recomendo usar o [Live Server](htt
 Para clonar o repositório:
 
 ```
-git clone git@github.com:gabriellima77/Desafio-Front-End.git
-cd Desafio-Front-End
+git clone git@github.com:gabriellima77/Pomodoro.git
+cd Pomodoro
 ```
