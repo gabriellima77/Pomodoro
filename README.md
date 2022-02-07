@@ -9,7 +9,7 @@ Como ultimamente estou estudando bastante offline, então resolvi fazer a minha 
 
 <br/>
 
-Se quiser testar a aplicação click[aqui](https://)
+Se quiser testar a aplicação click [aqui](https://pomodoro-ten-iota.vercel.app/)
 
 ## Começando
 
