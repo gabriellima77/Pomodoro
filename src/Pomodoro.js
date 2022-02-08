@@ -86,10 +86,10 @@ export default class Pomodoro {
     // Se a tab estiver focada toca o som
     if (tabIsFocused) {
       this.audio.play();
-      window.onfocus = null;
       setInterval(() => {
         this.audio.pause();
         this.audio.currentTime = 7;
+        window.onfocus = null;
       }, this.playingTime);
     } else {
       // mostra notificação que o tempo acabou e ao entrar na página toca o som
@@ -97,10 +97,10 @@ export default class Pomodoro {
       console.log(window.onfocus);
       window.onfocus = () => {
         this.audio.play();
-        window.onfocus = null;
         setInterval(() => {
           this.audio.pause();
           this.audio.currentTime = 7;
+          window.onfocus = null;
         }, this.playingTime);
       };
     }
