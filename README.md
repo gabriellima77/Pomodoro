@@ -9,7 +9,7 @@ Como ultimamente estou estudando offline, então resolvi fazer a minha versão d
 
 <br/>
 
-Se quiser testar a aplicação click[aqui](https://)
+Se quiser testar a aplicação click [aqui](https://pomodoro-ten-iota.vercel.app/)
 
 ## Começando
 
@@ -18,6 +18,6 @@ Se quiser rodar a aplicação na sua máquina recomendo usar o [Live Server](htt
 Para clonar o repositório:
 
 ```
-git clone git@github.com:gabriellima77/Desafio-Front-End.git
-cd Desafio-Front-End
+git clone git@github.com:gabriellima77/Pomodoro.git
+cd Pomodoro
 ```
