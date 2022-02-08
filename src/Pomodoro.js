@@ -17,8 +17,20 @@ export default class Pomodoro {
 
     this.type = 'Pomodoro';
 
+    // atributos relacionados ao audio
+    this.playingTime = 5000;
+    this.audio = document.createElement('audio');
+    this.audio.src = './assets/alarm.mp3';
+    this.audio.currentTime = 7;
+
+    // Permissão de alerta
+    this.getPermission();
     // Faz toda a manipulão do DOM, criando o Pomodoro.element
     this.createContainer();
+  }
+
+  async getPermission() {
+    this.permission = await Notification.requestPermission();
   }
 
   removeBkColor() {
@@ -45,25 +57,61 @@ export default class Pomodoro {
     body.classList.add(classList);
   }
 
-  // toca som por 5 segundos
-  playSound() {
-    const playingTime = 5000;
-    const audio = document.createElement('audio');
-    audio.src = './assets/alarm.mp3';
-    audio.currentTime = 7;
-    audio.play();
-    setInterval(() => {
-      audio.pause();
-    }, playingTime);
+  getHiddenProp() {
+    var prefixes = ['webkit', 'moz', 'ms', 'o'];
+
+    // se tiver o atributo hidden nativamente retorne isso
+    if ('hidden' in document) return 'hidden';
+
+    // se não procure nos prefixos conhecidos o atributo Hidden
+    for (var i = 0; i < prefixes.length; i++) {
+      if (prefixes[i] + 'Hidden' in document) return prefixes[i] + 'Hidden';
+    }
+
+    // ou não é existe esse atributo
+    return null;
   }
 
-  // Controla o os atributos de minutos e segundo pomodoro 
+  showNotification() {
+    if (this.permission === 'granted') {
+      const greeting = new Notification(this.notificationMessage);
+      setTimeout(() => greeting.close(), 3000);
+    }
+  }
+
+  // toca som por 5 segundos
+  playSound() {
+    const hiddenAttribute = this.getHiddenProp();
+    const tabIsFocused = !document[hiddenAttribute];
+    // Se a tab estiver focada toca o som
+    if (tabIsFocused) {
+      this.audio.play();
+      window.onfocus = null;
+      setInterval(() => {
+        this.audio.pause();
+        this.audio.currentTime = 7;
+      }, this.playingTime);
+    } else {
+      // mostra notificação que o tempo acabou e ao entrar na página toca o som
+      this.showNotification();
+      console.log(window.onfocus);
+      window.onfocus = () => {
+        this.audio.play();
+        window.onfocus = null;
+        setInterval(() => {
+          this.audio.pause();
+          this.audio.currentTime = 7;
+        }, this.playingTime);
+      };
+    }
+  }
+
+  // Controla o os atributos de minutos e segundo pomodoro
   // e toca o som quando o tempo acaba
   timer(element) {
     if (this.m <= 0 && this.s <= 0) {
       clearInterval(this.interval);
       this.playSound();
-
       if (this.pomodoros >= 3 && this.type === 'Pomodoro') {
         this.changePomodoro('Long');
         this.pomodoros = 0;
@@ -92,9 +140,12 @@ export default class Pomodoro {
   // changeToPlay é um booleano que se for true texto colocado será play
   // se changeToPlay for false ou não declarado o texto mudará de Play para Pause ou o contrário
   changePomodoro(type, changeToPlay) {
+    this.notificationMessage = 'Pomodoro is Over!';
+    if (type !== 'Pomodoro')
+      this.notificationMessage = 'Break is Over! Time to go back to work!';
     this.changeBkColor(type);
     this.m = this[type];
-    this.s = 0;
+    this.s = 15;
     clearInterval(this.interval);
     this.timerElement.textContent = this.getTimer;
     this.type = type;
@@ -234,7 +285,13 @@ export default class Pomodoro {
 
     confirm.addEventListener('click', () => {
       const inputs = [...document.querySelectorAll('.change-time')];
-      const values = inputs.map((input) => input.value);
+      let values = inputs.map((input) => input.value);
+      values = values.map((value) => {
+        let result = Math.round(value);
+        if (result < 0) result = 0;
+        else if (result > 60) result = 60;
+        return result;
+      });
 
       this.Pomodoro = values[0];
       this.Short = values[1];
@@ -270,7 +327,6 @@ export default class Pomodoro {
 
   putContainerEvents(container) {
     // Eventos de transição e de ação
-    
     container.addEventListener('mousedown', (e) => {
       if (this.isSettingsBtn(e)) return;
       this.isClicked = true;
@@ -281,6 +337,8 @@ export default class Pomodoro {
       if (!this.isClicked) return;
       container.classList.remove('active');
       if (this.playBtn.textContent === 'Play') {
+        this.audio.pause();
+        this.audio.currentTime = 7;
         this.interval = setInterval(() => this.timer(this.timerElement), 1000);
       } else clearInterval(this.interval);
       this.changeButtonText();
@@ -291,6 +349,8 @@ export default class Pomodoro {
       if (this.isSettingsBtn(e)) return;
       this.isClicked = false;
       if (this.playBtn.textContent === 'Play') {
+        this.audio.pause();
+        this.audio.currentTime = 7;
         this.interval = setInterval(() => this.timer(this.timerElement), 1000);
       } else clearInterval(this.interval);
       this.changeButtonText();
