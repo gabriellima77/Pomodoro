@@ -145,7 +145,7 @@ export default class Pomodoro {
       this.notificationMessage = 'Break is Over! Time to go back to work!';
     this.changeBkColor(type);
     this.m = this[type];
-    this.s = 15;
+    this.s = 0;
     clearInterval(this.interval);
     this.timerElement.textContent = this.getTimer;
     this.type = type;
