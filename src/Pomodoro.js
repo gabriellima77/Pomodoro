@@ -16,6 +16,7 @@ export default class Pomodoro {
     this.Long = 15;
 
     this.type = 'Pomodoro';
+    this.notificationMessage = 'Pomodoro is Over!';
 
     // atributos relacionados ao audio
     this.playingTime = 5000;
